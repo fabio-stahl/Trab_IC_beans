@@ -1,0 +1,171 @@
+﻿py : C:\Users\fabio\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\nbformat\validator.py:434: 
+MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may 
+want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of 
+nbformat are fixing this issue transparently, and will stop doing so in the future.
+No linha:1 caractere:350
++ ... lulas_smoke.json; py run_q3_q4.py *> resultados_q3q4\log_execucao.txt
++                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Users\fabio\... in the future.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  _validate(nbdict, ref, version, version_minor, relax_add_props)
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) 
+is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned 
+CurveZMQ keys to enable transport encryption.
+C:\Users\fabio\AppData\Roaming\Python\Python314\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop 
+does not implement add_reader family of methods required for zmq. Registering an additional selector thread for 
+add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this 
+warning.
+  self._get_loop()
+C:\Users\fabio\AppData\Local\Python\pythoncore-3.14-64\python.exe
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793799822.423419   31148 port.cc:153] oneDNN custom operations are on. You may see slightly different 
+numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the 
+environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793799824.744088   31148 port.cc:153] oneDNN custom operations are on. You may see slightly different 
+numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the 
+environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+TensorFlow: 2.22.0-rc0
+(13611, 17)
+{0: 'BARBUNYA', 1: 'BOMBAY', 2: 'CALI', 3: 'DERMASON', 4: 'HOROZ', 5: 'SEKER', 6: 'SIRA'}
+Linhas duplicadas: 68
+Shape após remoção: (13543, 17)
+16 atributos, 7 classes
+Treino: (9208, 16) | Validação: (1626, 16) | Teste (reservado): (2709, 16)
+
+>>> executando célula 21
+η=0.01, α=0.5, lote=32, até 100 épocas ou perda ≤ 0.001
+
+>>> executando célula 22
+Treinando 35 topologias...
+[         10] params=   247 | perda treino=0.1965 val=0.1661 (mín 0.1661 @ ép. 100) | F1 val=0.9508 | 19.7 s
+[         20] params=   487 | perda treino=0.1900 val=0.1630 (mín 0.1630 @ ép. 100) | F1 val=0.9531 | 16.6 s
+[         30] params=   727 | perda treino=0.1848 val=0.1589 (mín 0.1589 @ ép. 100) | F1 val=0.9530 | 19.3 s
+[         40] params=   967 | perda treino=0.1845 val=0.1649 (mín 0.1649 @ ép. 100) | F1 val=0.9509 | 18.4 s
+[         50] params=  1207 | perda treino=0.1813 val=0.1616 (mín 0.1616 @ ép. 100) | F1 val=0.9541 | 17.3 s
+[         60] params=  1447 | perda treino=0.1799 val=0.1625 (mín 0.1625 @ ép.  99) | F1 val=0.9532 | 16.3 s
+[         70] params=  1687 | perda treino=0.1780 val=0.1603 (mín 0.1603 @ ép. 100) | F1 val=0.9539 | 16.1 s
+[         80] params=  1927 | perda treino=0.1791 val=0.1654 (mín 0.1654 @ ép. 100) | F1 val=0.9509 | 16.0 s
+[         90] params=  2167 | perda treino=0.1757 val=0.1598 (mín 0.1598 @ ép. 100) | F1 val=0.9556 | 16.0 s
+[        100] params=  2407 | perda treino=0.1758 val=0.1606 (mín 0.1606 @ ép. 100) | F1 val=0.9519 | 16.0 s
+[      10-10] params=   357 | perda treino=0.1909 val=0.1663 (mín 0.1663 @ ép.  99) | F1 val=0.9540 | 16.7 s
+[      20-20] params=   907 | perda treino=0.1768 val=0.1687 (mín 0.1687 @ ép.  98) | F1 val=0.9571 | 16.7 s
+[      30-30] params=  1657 | perda treino=0.1695 val=0.1572 (mín 0.1572 @ ép. 100) | F1 val=0.9568 | 17.2 s
+[      40-40] params=  2607 | perda treino=0.1639 val=0.1651 (mín 0.1644 @ ép.  53) | F1 val=0.9528 | 17.0 s
+[      50-50] params=  3757 | perda treino=0.1654 val=0.1635 (mín 0.1631 @ ép.  65) | F1 val=0.9542 | 17.5 s
+[      60-60] params=  5107 | perda treino=0.1615 val=0.1633 (mín 0.1626 @ ép.  80) | F1 val=0.9521 | 23.6 s
+[      70-70] params=  6657 | perda treino=0.1577 val=0.1667 (mín 0.1650 @ ép.  40) | F1 val=0.9520 | 18.4 s
+[      80-80] params=  8407 | perda treino=0.1587 val=0.1660 (mín 0.1645 @ ép.  62) | F1 val=0.9515 | 17.7 s
+[      90-90] params= 10357 | perda treino=0.1555 val=0.1646 (mín 0.1620 @ ép.  41) | F1 val=0.9518 | 18.2 s
+[    100-100] params= 12507 | perda treino=0.1562 val=0.1667 (mín 0.1655 @ ép.  70) | F1 val=0.9513 | 18.4 s
+[   10-10-10] params=   467 | perda treino=0.1874 val=0.1681 (mín 0.1681 @ ép. 100) | F1 val=0.9521 | 18.0 s
+[   20-20-20] params=  1327 | perda treino=0.1706 val=0.1696 (mín 0.1656 @ ép.  45) | F1 val=0.9515 | 17.7 s
+[   30-30-30] params=  2587 | perda treino=0.1604 val=0.1737 (mín 0.1696 @ ép.  35) | F1 val=0.9454 | 17.9 s
+[   40-40-40] params=  4247 | perda treino=0.1578 val=0.1660 (mín 0.1627 @ ép.  47) | F1 val=0.9479 | 17.9 s
+[   50-50-50] params=  6307 | perda treino=0.1509 val=0.1748 (mín 0.1678 @ ép.  26) | F1 val=0.9510 | 18.2 s
+[   60-60-60] params=  8767 | perda treino=0.1510 val=0.1711 (mín 0.1639 @ ép.  34) | F1 val=0.9509 | 18.3 s
+[   70-70-70] params= 11627 | perda treino=0.1459 val=0.1745 (mín 0.1679 @ ép.  43) | F1 val=0.9490 | 20.1 s
+[   80-80-80] params= 14887 | perda treino=0.1444 val=0.1778 (mín 0.1723 @ ép.  26) | F1 val=0.9511 | 21.3 s
+[   90-90-90] params= 18547 | perda treino=0.1407 val=0.1738 (mín 0.1654 @ ép.  32) | F1 val=0.9558 | 22.5 s
+[100-100-100] params= 22607 | perda treino=0.1398 val=0.1793 (mín 0.1685 @ ép.  32) | F1 val=0.9505 | 21.3 s
+[      64-32] params=  3399 | perda treino=0.1644 val=0.1665 (mín 0.1661 @ ép.  88) | F1 val=0.9509 | 18.9 s
+[     100-50] params=  7107 | perda treino=0.1587 val=0.1645 (mín 0.1632 @ ép.  66) | F1 val=0.9502 | 20.6 s
+[   60-30-15] params=  3427 | perda treino=0.1561 val=0.1701 (mín 0.1664 @ ép.  47) | F1 val=0.9513 | 20.6 s
+[   80-40-20] params=  5567 | perda treino=0.1568 val=0.1703 (mín 0.1680 @ ép.  51) | F1 val=0.9505 | 20.6 s
+[  100-50-25] params=  8207 | perda treino=0.1514 val=0.1745 (mín 0.1721 @ ép.  68) | F1 val=0.9503 | 20.6 s
+
+Nenhuma topologia atingiu perda ≤ 0.001: True
+
+>>> executando célula 23
+
+>>> executando célula 24
+
+>>> executando célula 25
+
+>>> executando célula 26
+
+>>> executando célula 27
+[      30-30] semente 0: perda val=0.1616  F1 val=0.9551
+[      30-30] semente 1: perda val=0.1635  F1 val=0.9537
+[      30-30] semente 2: perda val=0.1612  F1 val=0.9525
+[         30] semente 0: perda val=0.1630  F1 val=0.9541
+[         30] semente 1: perda val=0.1653  F1 val=0.9534
+[         30] semente 2: perda val=0.1609  F1 val=0.9539
+[         90] semente 0: perda val=0.1620  F1 val=0.9545
+[         90] semente 1: perda val=0.1625  F1 val=0.9523
+[         90] semente 2: perda val=0.1642  F1 val=0.9524
+[         70] semente 0: perda val=0.1651  F1 val=0.9505
+[         70] semente 1: perda val=0.1621  F1 val=0.9519
+[         70] semente 2: perda val=0.1612  F1 val=0.9545
+[        100] semente 0: perda val=0.1611  F1 val=0.9544
+[        100] semente 1: perda val=0.1622  F1 val=0.9528
+[        100] semente 2: perda val=0.1600  F1 val=0.9515
+[         50] semente 0: perda val=0.1614  F1 val=0.9549
+[         50] semente 1: perda val=0.1613  F1 val=0.9557
+[         50] semente 2: perda val=0.1622  F1 val=0.9548
+Quatro topologias selecionadas: ['30-30', '100', '50', '30']
+Melhor topologia (usada na Questão 4): [30, 30]
+
+>>> executando célula 28
+
+>>> executando célula 29
+Topologia usada: 30-30
+
+>>> executando célula 30
+   5% ( 460 ex.) semente 0: épocas=200 | perda tr/val/teste=0.1351/0.2150/0.2673 | F1 val=0.9347 teste=0.9232 | 21.6 s
+   5% ( 460 ex.) semente 1: épocas=200 | perda tr/val/teste=0.1473/0.2317/0.2805 | F1 val=0.9323 teste=0.9194 | 19.2 s
+   5% ( 460 ex.) semente 2: épocas=144 | perda tr/val/teste=0.1257/0.2431/0.2930 | F1 val=0.9333 teste=0.9135 | 13.9 s
+  10% ( 920 ex.) semente 0: épocas=153 | perda tr/val/teste=0.1717/0.1943/0.2401 | F1 val=0.9429 teste=0.9254 | 15.3 s
+  10% ( 920 ex.) semente 1: épocas=159 | perda tr/val/teste=0.1548/0.1902/0.2589 | F1 val=0.9408 teste=0.9222 | 16.0 s
+  10% ( 920 ex.) semente 2: épocas=179 | perda tr/val/teste=0.1345/0.1978/0.2685 | F1 val=0.9440 teste=0.9255 | 17.9 s
+  20% (1841 ex.) semente 0: épocas=146 | perda tr/val/teste=0.1544/0.1783/0.2231 | F1 val=0.9496 teste=0.9312 | 15.9 s
+  20% (1841 ex.) semente 1: épocas=125 | perda tr/val/teste=0.1702/0.1776/0.2468 | F1 val=0.9470 teste=0.9239 | 13.7 s
+  20% (1841 ex.) semente 2: épocas=147 | perda tr/val/teste=0.1564/0.1822/0.2480 | F1 val=0.9497 teste=0.9249 | 16.0 s
+  40% (3683 ex.) semente 0: épocas= 79 | perda tr/val/teste=0.1742/0.1730/0.2148 | F1 val=0.9500 teste=0.9314 | 10.1 s
+  40% (3683 ex.) semente 1: épocas=163 | perda tr/val/teste=0.1697/0.1685/0.2189 | F1 val=0.9532 teste=0.9311 | 20.1 s
+  40% (3683 ex.) semente 2: épocas=133 | perda tr/val/teste=0.1679/0.1729/0.2263 | F1 val=0.9508 teste=0.9283 | 16.6 s
+  60% (5524 ex.) semente 0: épocas= 79 | perda tr/val/teste=0.1773/0.1648/0.2113 | F1 val=0.9532 teste=0.9348 | 11.3 s
+  60% (5524 ex.) semente 1: épocas=149 | perda tr/val/teste=0.1705/0.1627/0.2131 | F1 val=0.9532 teste=0.9333 | 20.8 s
+  60% (5524 ex.) semente 2: épocas=118 | perda tr/val/teste=0.1684/0.1643/0.2231 | F1 val=0.9528 teste=0.9300 | 16.6 s
+  80% (7366 ex.) semente 0: épocas= 94 | perda tr/val/teste=0.1703/0.1648/0.2052 | F1 val=0.9491 teste=0.9336 | 15.0 s
+  80% (7366 ex.) semente 1: épocas=101 | perda tr/val/teste=0.1749/0.1641/0.2113 | F1 val=0.9542 teste=0.9367 | 15.8 s
+  80% (7366 ex.) semente 2: épocas= 66 | perda tr/val/teste=0.1781/0.1638/0.2127 | F1 val=0.9521 teste=0.9334 | 10.6 s
+ 100% (9208 ex.) semente 0: épocas= 84 | perda tr/val/teste=0.1757/0.1611/0.2022 | F1 val=0.9543 teste=0.9355 | 14.6 s
+ 100% (9208 ex.) semente 1: épocas= 90 | perda tr/val/teste=0.1764/0.1636/0.2103 | F1 val=0.9534 teste=0.9382 | 15.0 s
+ 100% (9208 ex.) semente 2: épocas=122 | perda tr/val/teste=0.1656/0.1611/0.2094 | F1 val=0.9525 teste=0.9333 | 19.2 s
+
+>>> executando célula 31
+
+>>> executando célula 32
+
+>>> executando célula 33
+20% estratificada                s=0: n=1841 | F1 val=0.9496 teste=0.9312 | revocação BARBUNYA teste=0.898
+20% estratificada                s=1: n=1841 | F1 val=0.9470 teste=0.9239 | revocação BARBUNYA teste=0.894
+20% estratificada                s=2: n=1841 | F1 val=0.9497 teste=0.9249 | revocação BARBUNYA teste=0.898
+20% aleatória simples            s=0: n=1841 | F1 val=0.9470 teste=0.9269 | revocação BARBUNYA teste=0.898
+20% aleatória simples            s=1: n=1841 | F1 val=0.9458 teste=0.9328 | revocação BARBUNYA teste=0.913
+20% aleatória simples            s=2: n=1841 | F1 val=0.9516 teste=0.9249 | revocação BARBUNYA teste=0.879
+20% enviesada (BARBUNYA a 10%)   s=0: n=1679 | F1 val=0.9403 teste=0.9234 | revocação BARBUNYA teste=0.789
+20% enviesada (BARBUNYA a 10%)   s=1: n=1679 | F1 val=0.9386 teste=0.9148 | revocação BARBUNYA teste=0.781
+20% enviesada (BARBUNYA a 10%)   s=2: n=1679 | F1 val=0.9374 teste=0.9208 | revocação BARBUNYA teste=0.777
+ruído   0% s=0: acc treino (rótulos ruidosos)=0.9343 | F1 val=0.9543 teste=0.9355 | épocas=84
+ruído   0% s=1: acc treino (rótulos ruidosos)=0.9351 | F1 val=0.9534 teste=0.9382 | épocas=90
+ruído   0% s=2: acc treino (rótulos ruidosos)=0.9376 | F1 val=0.9525 teste=0.9333 | épocas=122
+ruído  10% s=0: acc treino (rótulos ruidosos)=0.8460 | F1 val=0.9541 teste=0.9335 | épocas=232
+ruído  10% s=1: acc treino (rótulos ruidosos)=0.8424 | F1 val=0.9496 teste=0.9351 | épocas=158
+ruído  10% s=2: acc treino (rótulos ruidosos)=0.8417 | F1 val=0.9508 teste=0.9337 | épocas=119
+ruído  20% s=0: acc treino (rótulos ruidosos)=0.7492 | F1 val=0.9469 teste=0.9318 | épocas=137
+ruído  20% s=1: acc treino (rótulos ruidosos)=0.7518 | F1 val=0.9474 teste=0.9307 | épocas=261
+ruído  20% s=2: acc treino (rótulos ruidosos)=0.7548 | F1 val=0.9547 teste=0.9309 | épocas=299
+ruído  30% s=0: acc treino (rótulos ruidosos)=0.6551 | F1 val=0.9496 teste=0.9346 | épocas=160
+ruído  30% s=1: acc treino (rótulos ruidosos)=0.6590 | F1 val=0.9533 teste=0.9303 | épocas=235
+ruído  30% s=2: acc treino (rótulos ruidosos)=0.6567 | F1 val=0.9562 teste=0.9265 | épocas=278
+C:\Users\fabio\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\nbformat\validator.py:434: 
+MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may 
+want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of 
+nbformat are fixing this issue transparently, and will stop doing so in the future.
+  _validate(nbdict, ref, version, version_minor, relax_add_props)
+
+>>> executando célula 34
+teste.ipynb atualizado: 39 células.

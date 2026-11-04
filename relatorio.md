@@ -140,7 +140,117 @@ A topologia $16 \to 64 \to 32 \to 7$ com ativações ReLU e Softmax comprovou se
 
 ---
 
-## 4. Guia e Template para as Próximas Questões (3 a 7)
+## 4. Relatório Técnico — Questão 3: Topologia da Rede (Camadas e Neurônios)
+
+### a. Descrição da configuração experimental
+* **Faixas testadas:** 1, 2 e 3 camadas ocultas × {10, 20, …, 100} neurônios por camada (grade uniforme, 30 redes), mais 5 topologias em funil (64-32, 100-50, 60-30-15, 80-40-20, 100-50-25). São **35 topologias**, de 247 a 22.607 parâmetros.
+* **Ativações e perda:** ReLU nas camadas ocultas (inicialização He Normal), Softmax na saída (Glorot Uniform), Entropia Cruzada Categórica.
+* **Critério de parada:** perda de treino $\le 0.001$ **ou** 100 épocas.
+* **Fixos:** SGD com $\eta = 0.01$ e $\alpha = 0.5$ (melhores da Q2), lote 32, semente 42, mesmos conjuntos de treino (9.208) e validação (1.626). O teste não foi usado.
+* **Seleção:** as 6 topologias com menor perda de validação foram re-treinadas com mais 3 sementes (4 no total); o ranking usa a perda média de validação.
+
+### b. Resultados obtidos
+Tabela completa acima (Tabela 3) e em `resultados_q3q4/q3_topologias.csv`. Resumo por profundidade:
+
+| Camadas | Perda val (faixa) | F1 val (faixa) | Perda treino (faixa) | Época da menor perda val | Diagnóstico | Tempo médio |
+|:---:|:---:|:---:|:---:|:---:|:---|:---:|
+| 1 | 0.1589 – 0.1661 | 0.9508 – 0.9556 | 0.1757 – 0.1965 | 99 – 100 | 10/10 bom ajuste | ≈ 17 s |
+| 2 | 0.1572 – 0.1687 | 0.9513 – 0.9571 | 0.1555 – 0.1909 | 40 – 100 | 10/10 bom ajuste | ≈ 18 s |
+| 3 | 0.1660 – 0.1793 | 0.9454 – 0.9558 | 0.1398 – 0.1874 | 26 – 100 | 1 bom, 8 início de overfitting, 1 overfitting | ≈ 19 s |
+| funil | 0.1645 – 0.1745 | 0.9502 – 0.9513 | 0.1514 – 0.1644 | 47 – 88 | 4 bom, 1 início de overfitting | ≈ 20 s |
+
+**Tabela 4: as quatro topologias selecionadas (4 sementes cada)**
+
+| Posição | Topologia | Parâmetros | Perda val (média ± dp) | F1 val (média ± dp) | Precisão val | Revocação val | Tempo médio |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1 | **30-30** | 1.657 | 0.1609 ± 0.0026 | 0.9545 ± 0.0018 | 0.9547 | 0.9544 | 19.2 s |
+| 2 | **100** | 2.407 | 0.1610 ± 0.0009 | 0.9527 ± 0.0013 | 0.9530 | 0.9524 | 16.5 s |
+| 3 | **50** | 1.207 | 0.1616 ± 0.0004 | 0.9549 ± 0.0007 | 0.9552 | 0.9546 | 17.0 s |
+| 4 | **30** | 727 | 0.1620 ± 0.0027 | 0.9536 ± 0.0005 | 0.9541 | 0.9531 | 16.9 s |
+| 5 | 90 | 2.167 | 0.1621 ± 0.0018 | 0.9537 ± 0.0016 | 0.9539 | 0.9536 | 16.2 s |
+| 6 | 70 | 1.687 | 0.1622 ± 0.0021 | 0.9527 ± 0.0018 | 0.9530 | 0.9525 | 16.1 s |
+
+Figuras: [`q3_heatmaps.png`](q3_heatmaps.png), [`q3_tendencias.png`](q3_tendencias.png), [`q3_curvas_loss.png`](q3_curvas_loss.png) e [`q3_estabilidade.png`](q3_estabilidade.png).
+
+### c. Análise e discussão
+* **Critério de parada:** nenhuma topologia chegou a perda $\le 0.001$. Como na Q2, as classes se sobrepõem (sobretudo SIRA × DERMASON e BARBUNYA × CALI), e a perda de treino fica entre 0.14 e 0.20. Todas as redes rodaram as 100 épocas.
+* **Complexidade × desempenho:** mais capacidade **reduz a perda de treino** (0.1965 com 1×10 contra 0.1398 com 3×100), mas **não melhora a validação**. A perda de validação de todas as 35 redes fica numa faixa estreita (0.157–0.179) e a Medida-F entre 0.945 e 0.957. As melhores redes são as **pequenas e médias** (1 camada com 30–100 neurônios, ou 2×30). Acrescentar camadas piora a validação: a média da perda de validação é ≈ 0.162 com 1 camada, ≈ 0.165 com 2 e ≈ 0.173 com 3.
+* **Underfitting:** nenhuma rede ficou acima do limiar (perda > 0.20 no treino **e** na validação). As de menor capacidade (1×10, 2×10 e 1×20, com perda de treino de 0.19–0.20) estão no limite: aprendem mais devagar e ainda descem na época 100. Mesmo assim, generalizam tão bem quanto as maiores (F1 val ≈ 0.951–0.954). Para 16 atributos e 7 classes, 10 neurônios já bastam.
+* **Overfitting:** aparece nas redes **profundas e largas**. Com 3 camadas e ≥ 20 neurônios, a perda de validação chega ao mínimo cedo (épocas 26–47) e depois **sobe**, enquanto a de treino continua caindo. O caso mais claro é o **100-100-100**: treino 0.1398, validação 0.1793, mínimo de 0.1685 na época 32. As redes de 1 camada não mostram esse efeito: a validação ainda cai na época 100.
+* **Tempo de treinamento:** de 247 para 22.607 parâmetros (≈ 90×), o tempo passou só de ~16 s para ~21–24 s. Nesta base pequena, em CPU e com lote 32, o custo vem quase todo do overhead fixo de cada passo (≈ 288 lotes por época), e não das multiplicações de matriz. Cada camada extra acrescenta ≈ 1 s em 100 épocas.
+* **Equilíbrio:** redes maiores custam um pouco mais de tempo e não melhoram a generalização. Pelo contrário, ficam mais propensas a overfitting. O ponto de equilíbrio está em redes com **≈ 700 a 2.500 parâmetros** (1 camada com 30–100 neurônios, ou 2×30).
+* **Estabilidade:** entre as 6 finalistas, a perda média de validação varia só 0.0013, menos que o desvio entre sementes (até 0.0027). Na prática, estão **estatisticamente empatadas**. O desempate considera também a variabilidade e a Medida-F.
+
+### d. Seleção das quatro melhores topologias
+1. **30-30 (2 camadas):** menor perda média de validação (0.1609) e a menor perda numa única execução de toda a grade (0.1572), com F1 de 0.9545. Rede pequena (1.657 parâmetros), sem sinal de overfitting em 100 épocas. **Foi a escolhida para a Questão 4.**
+2. **100 (1 camada):** praticamente a mesma perda (0.1610) com desvio entre sementes muito baixo (± 0.0009). É uma rede larga e rasa, ainda em melhora na época 100.
+3. **50 (1 camada):** a **mais estável** (perda val ± 0.0004) e com a **maior Medida-F média** (0.9549), usando só 1.207 parâmetros.
+4. **30 (1 camada):** a mais econômica (727 parâmetros), com desempenho quase igual ao das maiores (F1 0.9536 ± 0.0005). Mostra que redes muito pequenas já bastam para o problema.
+
+As topologias de 3 camadas e em funil ficaram fora: todas tiveram perda de validação maior e indícios de overfitting.
+
+### e. Conclusão da etapa
+* Na Dry Bean Dataset, a **arquitetura tem efeito pequeno na generalização**: as 35 topologias ficam numa faixa de apenas 1,2 p.p. de Medida-F (0.945–0.957). A topologia pesa menos que a escolha de $\eta$ e $\alpha$ (Q2).
+* **Mais camadas e mais neurônios** reduzem a perda de treino, mas antecipam o mínimo da validação e geram overfitting, sem ganho de Medida-F. **Uma ou duas camadas pequenas** dão o melhor compromisso entre generalização, estabilidade e custo.
+* As quatro configurações selecionadas (**30-30, 100, 50 e 30**) serão comparadas no conjunto de teste na etapa de Validação Inicial. A **30-30** é usada na Questão 4.
+
+---
+
+## 5. Relatório Técnico — Questão 4: Influência dos Dados de Treinamento (Quantidade e Qualidade)
+
+### a. Descrição do experimento
+* **Modelo:** melhor topologia da Q3, **16-30-30-7**: ReLU nas ocultas, Softmax na saída, Entropia Cruzada Categórica, SGD com $\eta = 0.01$, $\alpha = 0.5$ e lote 32. Tudo igual às etapas anteriores.
+* **Tamanhos testados:** 5%, 10%, 20%, 40%, 60%, 80% e 100% do conjunto de treinamento, ou seja, de 460 a 9.208 exemplos. Incluímos 5% e 10% além dos tamanhos sugeridos (20–100%) para ver a região onde faltam dados.
+* **Amostragem:** **estratificada** (`train_test_split(..., stratify=y)`), que preserva a proporção das 7 classes. Cada tamanho foi repetido com 3 sementes; a semente muda a amostra e os pesos iniciais.
+* **Qualidade dos exemplos:** (i) com 20% dos dados, amostra estratificada × aleatória simples × **enviesada**, em que a BARBUNYA cai de 9,8% para 1,1% da amostra; (ii) **ruído de rótulos**, com 10%, 20% e 30% dos exemplos de treino trocados para outra classe sorteada. Validação e teste sempre com rótulos corretos.
+* **Parada:** perda de treino $\le 0.001$, ou 20 épocas sem melhora na perda de validação (máx. 300 épocas), restaurando os melhores pesos. Assim cada tamanho treina até convergir, e o número de épocas vira uma medida de **tempo de convergência**. O `StandardScaler` é ajustado só na amostra de treino usada.
+* **Conjunto de teste:** 2.709 exemplos, usados apenas para medir a generalização, como pede o enunciado. Nenhuma decisão foi tomada com base nele.
+
+### b. Resultados obtidos
+
+**Tabela 5: quantidade de exemplos (média ± desvio, 3 sementes)**
+
+| Fração | Exemplos | Época de convergência | Tempo (s) | Perda treino | Perda val | Perda teste | Acurácia val | Acurácia teste | F1 val | F1 teste |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 5% | 460 | 161 ± 32 | 18.3 ± 3.9 | 0.1360 ± 0.0108 | 0.2299 ± 0.0141 | 0.2802 ± 0.0129 | 92.15% ± 0.60 | 90.65% ± 0.58 | 0.9335 ± 0.0012 | 0.9187 ± 0.0049 |
+| 10% | 920 | 144 ± 14 | 16.4 ± 1.3 | 0.1537 ± 0.0186 | 0.1941 ± 0.0038 | 0.2558 ± 0.0144 | 93.28% ± 0.28 | 91.33% ± 0.15 | 0.9426 ± 0.0016 | 0.9244 ± 0.0019 |
+| 20% | 1.841 | 119 ± 12 | 15.2 ± 1.3 | 0.1603 ± 0.0086 | 0.1794 ± 0.0025 | 0.2393 ± 0.0141 | 93.99% ± 0.25 | 91.61% ± 0.43 | 0.9488 ± 0.0015 | 0.9266 ± 0.0040 |
+| 40% | 3.683 | 105 ± 43 | 15.6 ± 5.1 | 0.1706 ± 0.0032 | 0.1715 ± 0.0026 | 0.2200 ± 0.0058 | 94.22% ± 0.21 | 92.01% ± 0.11 | 0.9513 ± 0.0017 | 0.9303 ± 0.0017 |
+| 60% | 5.524 | 95 ± 35 | 16.2 ± 4.8 | 0.1720 ± 0.0047 | 0.1639 ± 0.0011 | 0.2158 ± 0.0064 | 94.44% ± 0.09 | 92.27% ± 0.29 | 0.9531 ± 0.0002 | 0.9327 ± 0.0025 |
+| 80% | 7.366 | 67 ± 19 | 13.8 ± 2.8 | 0.1744 ± 0.0039 | 0.1642 ± 0.0005 | 0.2097 ± 0.0040 | 94.22% ± 0.31 | 92.49% ± 0.17 | 0.9518 ± 0.0025 | 0.9346 ± 0.0018 |
+| 100% | 9.208 | 79 ± 20 | 16.2 ± 2.5 | 0.1725 ± 0.0061 | 0.1619 ± 0.0015 | 0.2073 ± 0.0044 | 94.38% ± 0.20 | 92.57% ± 0.28 | 0.9534 ± 0.0009 | 0.9357 ± 0.0024 |
+
+**Tabela 6: qualidade e representatividade (média ± desvio, 3 sementes)**
+
+| Cenário | Exemplos | Épocas | Acurácia treino | Perda val | F1 val | F1 teste | Revocação BARBUNYA (teste) |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 20% estratificada | 1.841 | 139 ± 12 | 94.08% | 0.1794 | 0.9488 ± 0.0015 | 0.9266 ± 0.0040 | 0.897 ± 0.002 |
+| 20% aleatória simples | 1.841 | 132 ± 31 | 94.02% | 0.1849 | 0.9481 ± 0.0030 | 0.9282 ± 0.0041 | 0.897 ± 0.017 |
+| 20% enviesada (BARBUNYA 9,8% → 1,1%) | 1.679 | 177 ± 21 | 94.66% | 0.2026 | 0.9388 ± 0.0014 | 0.9197 ± 0.0044 | **0.782 ± 0.006** |
+| 100%, 0% de rótulos trocados | 9.208 | 99 ± 20 | 93.56% | 0.1619 | 0.9534 ± 0.0009 | 0.9357 ± 0.0024 | 0.911 |
+| 100%, 10% de rótulos trocados | 9.208 | 170 ± 57 | 84.34% | 0.2575 | 0.9515 ± 0.0024 | 0.9341 ± 0.0009 | 0.913 |
+| 100%, 20% de rótulos trocados | 9.208 | 232 ± 85 | 75.20% | 0.3699 | 0.9497 ± 0.0044 | 0.9311 ± 0.0006 | 0.913 |
+| 100%, 30% de rótulos trocados | 9.208 | 224 ± 60 | 65.69% | 0.4826 | 0.9530 ± 0.0033 | 0.9305 ± 0.0041 | 0.898 |
+
+Figuras: [`q4_curvas_generalizacao.png`](q4_curvas_generalizacao.png) (curvas de generalização no treino, validação e teste), [`q4_curvas_epocas.png`](q4_curvas_epocas.png) e [`q4_qualidade.png`](q4_qualidade.png).
+
+### c. Análise e discussão
+* **Curvas de generalização: melhora contínua com saturação.** A Medida-F no teste sobe de forma **monotônica** com o tamanho do treino: 0.9187 → 0.9244 → 0.9266 → 0.9303 → 0.9327 → 0.9346 → 0.9357. O ganho por exemplo, porém, cai rápido. Dobrar de 5% para 10% rende +0.57 p.p., e de 20% para 100% (5× mais dados) rende só +0.91 p.p. Na validação a curva **satura por volta de 40–60%** (F1 0.951–0.953); acima disso, as diferenças ficam dentro do desvio entre sementes. A perda de validação segue o mesmo padrão (0.230 → 0.172 em 40% → 0.162 em 100%).
+* **Overfitting com poucos dados:** com 460 exemplos a rede quase memoriza a amostra. A perda de treino é a menor (0.136), mas a de teste é a maior (0.280), um gap de 0.144. Conforme a amostra cresce, a perda de treino **sobe** (fica mais difícil ajustar todos os exemplos) e a de validação e teste **cai**, e as curvas se aproximam: com 100% o gap treino–teste é de 0.035. Mais dados funcionam aqui como regularização.
+* **Validação × teste:** o teste fica sistematicamente ≈ 1,5–2 p.p. abaixo da validação em F1. Há duas causas: a validação foi usada para a parada antecipada (e, nas etapas anteriores, para escolher os hiperparâmetros), o que a deixa levemente otimista; e há variação natural entre amostras. A tendência é a mesma nos dois conjuntos, então as conclusões se mantêm. Essa diferença reforça a importância de manter um conjunto de teste reservado.
+* **Representatividade:** com 1.841 exemplos, a amostra **aleatória simples** já reproduz bem as proporções das classes (BARBUNYA 9,4% contra 9,8%). Por isso teve o mesmo desempenho médio da estratificada (F1 teste 0.9282 × 0.9266). A estratificação reduz a **variância**: o desvio da revocação de BARBUNYA cai de 0.017 para 0.002, e o ganho seria maior com amostras pequenas ou classes raras. Já a amostra **enviesada** mostra o efeito de uma base não representativa. Com apenas 18 exemplos de BARBUNYA, a revocação dessa classe no teste cai de 0.897 para **0.782 (−11,5 p.p.)**: a rede passa a atribuir esses grãos às classes vizinhas. O F1 macro cai só 0.7 p.p. e a acurácia de treino até sobe, porque a métrica global esconde o problema. Uma classe sub-representada é prejudicada mesmo quando o modelo "parece" bom.
+* **Ruído de rótulos (qualidade):** a acurácia de treino, medida contra os rótulos ruidosos, cai quase exatamente na proporção do ruído (93.6% → 65.7% com 30%). Isso indica que a rede **não memorizou os rótulos errados**. A acurácia e o F1 no teste caem só 0.5 p.p. (0.9357 → 0.9305). Essa robustez vem do ruído ser uniforme (não favorece nenhuma classe), da capacidade pequena da 30-30 e da parada antecipada guiada por uma validação limpa. O preço aparece em duas frentes. A **perda de validação triplica** (0.162 → 0.483): as probabilidades ficam bem menos confiantes e calibradas. E o treino fica **mais lento**: a convergência passa de ~99 para ~230 épocas e o tempo dobra (16 s → 38 s).
+* **Tempo de convergência:** não cresce na proporção dos dados. Cada época custa mais com mais exemplos (0.10 s com 5% contra 0.17 s com 100%, só 1,7× para 20× mais dados, por causa do overhead fixo por época). Em compensação, com mais dados a rede converge em **menos épocas** (161 → 79), porque cada época faz mais atualizações de pesos. O tempo total fica em torno de 14–18 s em todos os tamanhos. Nesta base, o custo computacional não limita o uso de 100% dos dados.
+
+### d. Conclusão da etapa
+* **Quantidade:** mais dados sempre ajudaram, com retornos decrescentes. Com **≈ 40–60% do treino (3.700–5.500 exemplos)** o modelo já alcança ≈ 99,5–99,8% da Medida-F final (validação e teste). Com menos de 20% o ganho por exemplo ainda é alto e há overfitting visível.
+* **Qualidade:** a **representatividade das classes** pesa mais que o volume. Sub-representar uma classe custa mais de 11 p.p. de revocação nela e passa quase despercebido nas métricas globais. O ruído uniforme de rótulos afeta pouco a acurácia, mas degrada a calibração e dobra o tempo de treino. A amostragem estratificada é a escolha segura, principalmente para amostras pequenas.
+* **Ponto de equilíbrio:** como o tempo de treino praticamente não depende do tamanho da base, recomenda-se usar **100% dos dados de treino**, que deu a melhor generalização no teste (F1 0.9357). Se coletar e rotular dados fosse caro, ~40–60% (estratificado) seria o mínimo razoável.
+* Na etapa de Validação Inicial, as quatro topologias selecionadas na Q3 serão comparadas no conjunto de teste, treinadas com o conjunto de treinamento completo.
+
+---
+
+## 6. Guia para as Próximas Questões (5 a 7)
 
 Para assegurar o alinhamento da dupla e a continuidade imediata dos próximos experimentos, segue a divisão e o roteiro pré-estruturado:
 
@@ -148,13 +258,13 @@ Para assegurar o alinhamento da dupla e a continuidade imediata dos próximos ex
 * **Responsável:** Colega (Ímpar)
 * **Parâmetros herdados da Q2:** $\eta = 0.01$, $\alpha = 0.5$, otimizador SGD, mini-batch=32.
 * **Meta:** Selecionar as **quatro melhores topologias** com base em perda de validação, tempo computacional e Medida-F (*F1-Score*).
-* *Status:* Aguardando execução pelo colega no notebook.
+* *Status:* **Concluída** (seção 4). Quatro melhores: 30-30, 100, 50 e 30.
 
 ### Questão 4: Influência dos Dados de Treinamento (Volume de Amostras)
 * **Responsável:** Pedro / Usuário (Par)
-* **Parâmetros herdados da Q3:** Melhor topologia vencedora da Q3.
+* **Parâmetros herdados da Q3:** topologia 16-30-30-7.
 * **Meta:** Variar frações de dados ($20\%, 40\%, 60\%, 80\%, 100\%$) com amostragem estratificada e analisar curvas de saturação de generalização.
-* *Status:* A ser executado após conclusão da Q3.
+* *Status:* **Concluída** (seção 5).
 
 ### Questão 5: Influência dos Atributos (Seleção e Sensibilidade de Features)
 * **Responsável:** Colega (Ímpar)
@@ -163,7 +273,7 @@ Para assegurar o alinhamento da dupla e a continuidade imediata dos próximos ex
 
 ### Questão 6: Validação Inicial (Conjuntos de Treinamento e Teste Reservado)
 * **Responsável:** Pedro / Usuário (Par)
-* **Meta:** Avaliar as 4 melhores topologias da Questão 3 no conjunto de teste reservado ($2.709$ instâncias), selecionando o modelo campeão definitivo.
+* **Meta:** Avaliar as 4 melhores topologias da Questão 3 (30-30, 100, 50 e 30) no conjunto de teste reservado ($2.709$ instâncias), selecionando o modelo campeão definitivo.
 * *Status:* A ser executado após conclusão da Q5.
 
 ### Questão 7: Validação Cruzada ($k$-fold) Consolidada
